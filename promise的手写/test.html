@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./js/Promise.js"></script>
+    <script>
+         const p = new Promise((resolve,reject)=>{
+               setTimeout(()=>{
+                //   resolve (1)
+                reject(2)
+               },1000)
+           
+         }).then(
+            value=>{
+                console.log('onResolved1()'+ value);
+            },
+            reason=>{
+                console.log('onRejected1()'+reason);
+                throw 4
+            }
+        ).then(
+            value=>{
+                console.log('onResolved2()'+value);  
+            },
+            reason=>{
+                console.log('onRejected2()'+reason);
+                // throw 6
+            }
+        ).catch(reason=>{
+            console.log('onRejected3()'+reason);
+            
+        }).then(
+            value=>{
+                console.log('onResolved4()'+ value);
+            },
+            reason=>{
+                console.log('onRejected4()'+reason);
+                throw 4
+            }
+        )
+   
+        
+     
+    
+    </script>
+</body>
+</html>
