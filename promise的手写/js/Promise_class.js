@@ -1,18 +1,10 @@
-(function (window) {
-
-
-    const PENDING = 'pending'
-    const RESOLVED = 'resolved'
-    const REJECTED = 'rejected'
-
-    /**
-     * promise的构造函数
-     * @param：一个执行器函数 同步执行
-     * @returns：一个实例化的promise对象
-     */
-    function Promise(excutor) {
+class Promise{
+     constructor(excutor) {
         const self = this;
        
+        const PENDING = 'pending'
+        const RESOLVED = 'resolved'
+        const REJECTED = 'rejected'
         self.status = PENDING //保存当前状态
         self.data = undefined; //给promise对象制定一个用于存储结果的属性
         self.callbacks = [] //保存回调函数 结构为{onResolved(){},onRejected(){}}
@@ -59,78 +51,7 @@
         }
 
     }
-    //静态函数 返回一个promise对象 状态为resolved或者rejected
-    Promise.resolve = function (value) {
-        return new Promise((resolve,reject)=>{
-            // 1、value是promise
-            if(value instanceof Promise){//使用value的结果作为promise的结果
-                value.then(resolve,reject)
-            }else{  //2、value不是promise
-                resolve(value)
-            }
-        })
-    }
-    //静态函数 返回一个promise对象 状态为rejected
-    Promise.reject = function (reason) {
-        //返回一个失败的promise
-            return new Promise((resolve,reject)=>{
-                reject(reason)
-            })
-    }
-    /**
-     * 返回一个新的promise
-     * @param:promise对象数组或者数组中不是promise对象
-     * @returns：新的promise 当参数中所有的promise成功时返回新的promise结果的数组 有一个失败就失败
-     */
-    Promise.all = function(promises){//难点1、知道什么时候全部成功 用一个计数器 2、返回的数组的顺序与放入时候的顺序保持相同
-        //用来保存所有成功数据的数组 长度为参数的长度
-        const values = new Array(promises.length)
-        //用来保存成功promise的数量
-        let resolvedCount = 0
-        return new Promise((resolve,reject)=>{
-            //遍历获取每个promise的结果
-            promises.forEach((p,index)=>{
-                Promise.resolve(p).then( //数组中的值可能不是promise对象将其包装为promise对象
-                    value=>{
-                        resolvedCount++;
-                        //p成功将成功的值保存到values
-                        values[index] = value //顺序应该保持相同
-                        //如果全部成功了将return的promise改为成功
-                        if(resolvedCount===promises.length){
-                            resolve(values)
-                        }
-                    },
-                    reason=>{//只要一个失败 那么return的promise失败
-                        reject(reason)
-                    }
-                )
-            })
-        })
-    }
-    /**
-     * @param:promise对象数组
-     * @returns 新的promise 结果状态由第一个完成的promise来决定
-     */
-    Promise.race = function(promises){
-        return new Promise((resolve,reject)=>{
-            //遍历获取每个promise的结果
-            promises.forEach((p,index)=>{
-                Promise.resolve(p).then(
-                    value=>{ //一旦成功了 将return的promise状态变为成功
-                        resolve(value)
-                    },
-                    reason=>{//一旦成功了 将return的promise状态变为成功
-                        reject(reason)
-                    }
-                )
-            })
-        })
-    }
-    /**
-     * 指定成功和失败的回调函数 可能直接调用也可能保存（根据执行器中的调用是否为异步）
-     * 返回一个新的promise对象
-     */
-    Promise.prototype.then = function (onResolved, onRejected) {
+    then(onResolved, onRejected) {
         const self = this;
         onResolved = typeof onResolved ==='function' ?onResolved : value=>value//制定默认的失败的回调（实现异常穿透的关键点）
 
@@ -186,14 +107,80 @@
         })
 
     }
-    Promise.prototype.catch = function (onRejected) {
+    catch(onRejected) {
             return  this.then(undefined,onRejected)
     }
+    static resolve(value) {
+        return new Promise((resolve,reject)=>{
+            // 1、value是promise
+            if(value instanceof Promise){//使用value的结果作为promise的结果
+                value.then(resolve,reject)
+            }else{  //2、value不是promise
+                resolve(value)
+            }
+        })
+    }
+    //静态函数 返回一个promise对象 状态为rejected
+    static reject(reason) {
+        //返回一个失败的promise
+            return new Promise((resolve,reject)=>{
+                reject(reason)
+            })
+    }
     /**
+     * 返回一个新的promise
+     * @param:promise对象数组或者数组中不是promise对象
+     * @returns：新的promise 当参数中所有的promise成功时返回新的promise结果的数组 有一个失败就失败
+     */
+    static all(promises){//难点1、知道什么时候全部成功 用一个计数器 2、返回的数组的顺序与放入时候的顺序保持相同
+        //用来保存所有成功数据的数组 长度为参数的长度
+        const values = new Array(promises.length)
+        //用来保存成功promise的数量
+        let resolvedCount = 0
+        return new Promise((resolve,reject)=>{
+            //遍历获取每个promise的结果
+            promises.forEach((p,index)=>{
+                Promise.resolve(p).then( //数组中的值可能不是promise对象将其包装为promise对象
+                    value=>{
+                        resolvedCount++;
+                        //p成功将成功的值保存到values
+                        values[index] = value //顺序应该保持相同
+                        //如果全部成功了将return的promise改为成功
+                        if(resolvedCount===promises.length){
+                            resolve(values)
+                        }
+                    },
+                    reason=>{//只要一个失败 那么return的promise失败
+                        reject(reason)
+                    }
+                )
+            })
+        })
+    }
+    /**
+     * @param:promise对象数组
+     * @returns 新的promise 结果状态由第一个完成的promise来决定
+     */
+    static race(promises){
+        return new Promise((resolve,reject)=>{
+            //遍历获取每个promise的结果
+            promises.forEach((p,index)=>{
+                Promise.resolve(p).then(
+                    value=>{ //一旦成功了 将return的promise状态变为成功
+                        resolve(value)
+                    },
+                    reason=>{//一旦成功了 将return的promise状态变为成功
+                        reject(reason)
+                    }
+                )
+            })
+        })
+    }
+      /**
      * 自定义方法 Promise.resolveDelay()延迟时间resolve
      * 返回一个promise对象 在指定时间后才确定结果可成功可失败
      */
-    Promise.resolveDelay = function (value, time) {
+    static resolveDelay (value, time) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 // 1、value是promise
@@ -209,12 +196,12 @@
      * 自定义方法 Promise.rejectDelay()延迟时间resolve
      * 返回一个promise对象 在指定时间后才失败
      */
-    Promise.rejectDelay = function(reason,time){
+    static rejectDelay (reason,time){
         return new Promise((resolve,reject)=>{
             setTimeout(() => {
                 reject(reason)
             }, time);
         })
     }
-    window.Promise = Promise;
-})(window)
+}
+// export default Promise

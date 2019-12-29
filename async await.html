@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /**
+         * 1 async 函数 
+         * 函数返回值为promise对象
+         * promise对象的结果由async函数执行的返回值决定
+         * 2、 await 表达式
+         * await 右侧的表达式一般为promise对象
+         * 如果表达式是promise对象 await返回的是promise成功的值
+         * 如果表达式是其他值直接将此值作为await的返回值
+         * 3、
+         * await必须卸载async函数中 async函数中可以没有await
+         * 如果await的promise失败了就会抛出异常需要try catch捕获
+        */
+    //  async function fn1(){
+    //      return 1
+    //  }    
+    //  const result = fn1();
+    //  console.log(result); // Promise 对象
+
+    function fn1(){
+        return Promise.resolve(1)
+    }
+    async function fn2(){
+        const result = await fn1();//await 右侧结果为promise，得到的结果是promise成功的值
+        const value = await 4;//若不是表达式结果为其本身
+        
+    }
+        
+    </script>
+</body>
+</html>
