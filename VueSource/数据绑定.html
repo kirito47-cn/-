@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <p>{{name}}</p>
+        <button v-on:click='update'>更新</button>
+    </div>
+    <script src="./js/mvvm.js"></script>
+    <script src="./js/Compile.js"></script>
+    <script>
+            let vm = new MyVue({
+                el:'#app',
+                data:{
+                    name:'feifei'
+                },
+                methods:{
+                    update(){
+                        this.name = 'hahah'
+                    }
+                }
+            })
+          
+            // let a = {};
+            // a._proto_ = Animal.prototype;
+            // Animal.call(a)
+            // console.log(a.color)
+
+        /**
+         * vm.name = 'abc' ==>vm中data的name发生变化 （通过数据代理）==>
+         * name的setter调用==>dep==>通知所有相关的watcher==>调用cb ==>
+         * update()执行
+         * 
+        */
+    </script>
+</body>
+</html>

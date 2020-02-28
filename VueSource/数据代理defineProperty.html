@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class MyVue{
+            constructor(options){
+                this.$options = options;
+                var data = this._data = this.$options.data;
+                var me = this;
+                Object.keys(data).forEach(key => {
+                    this._proxy(key)
+                })
+            }
+            _proxy(key) {
+                // var me = this
+                
+                
+                Object.defineProperty(this, key, {
+                    configurable: false,
+                    enumerable: true,
+                    get() {
+                        console.log(`检测到读取`)
+
+                        return this._data[key]
+                    },
+                    set(newVal) {
+                        console.log(`发生了变化！`)
+                        this._data[key] = newVal
+                    }
+                })
+            }
+        }
+
+        function MVVM(options) {
+            this.$options = options;
+            var data = this._data = this.$options.data;
+            var me = this;
+            Object.keys(data).forEach(key => {
+                this._proxy(key)
+            })
+
+        }
+        MVVM.prototype._proxy = function (key) {
+            var me = this
+            Object.defineProperty(me, key, {
+                configurable: false,
+                enumerable: true,
+                get() {
+                    return me._data[key]
+                },
+                set(newVal) {
+                    me._data[key] = newVal
+                }
+            })
+        }
+        // debugger
+        let vm = new MyVue({
+            data: {
+                name: '张三',
+                age: 18,
+                children: {
+                    a: 1,
+                    b: 2
+                },
+                hobby:['basketball']
+            }
+        })
+      vm.hobby//检测到读取
+      vm.hobby[0]//检测到读取
+      vm.hobby =[1]//发生了变化！
+      vm.hobby[1] = 'haha' //检测到读取
+     // console.log(vm.hobby) //[1,'haha']
+    //  vm.hobby[0] =2
+    vm.hobby.push(3) //检测到读取
+    vm.hobby.length//检测到读取
+     /**
+      * 只要不是重新赋值一个新的数组对象，任何对数组内部的修改都不会触发setter方法的执行
+     */
+    </script>
+</body>
+
+</html>

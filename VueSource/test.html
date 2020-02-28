@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.bootcss.com/jquery/3.1.0/jquery.js"></script>
+</head>
+
+<body>
+    <button>display event.namespace</button>
+    <p>44444444</p>
+    <script>
+        $("p").bind("test.something", function (event) {
+            alert(event.namespace);
+        });
+    
+        $("button").click(function (event) {
+            console.log(event.currentTarget,event.target,event.data)
+            $("p").trigger("test.something");
+        });
+    </script>
+</body>
+
+</html>

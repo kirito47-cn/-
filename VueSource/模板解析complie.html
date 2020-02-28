@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .a{
+            color: red;
+        }
+        .b{
+            font-size: 60px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <p >{{childred.name}}</p>
+        <p v-text = 'a'></p>
+        <div v-html='a'></div>
+       <h1 class="b" v-class='myClass'>{{name}}</h1>
+
+        <button v-on:click='show'>dianji </button>
+    </div>
+    <script src="./js/Compile.js"></script>
+       <script src="./js/mvvm.js"></script>
+
+ 
+    <!-- <script type="text/javascript" src="js/mvvm/compile.js"></script>
+    <script type="text/javascript" src="js/mvvm/mvvm.js"></script>
+    <script type="text/javascript" src="js/mvvm/observer.js"></script>
+    <script type="text/javascript" src="js/mvvm/watcher.js"></script> -->
+    <script>
+       
+       
+        let vm = new MyVue({
+            el: '#app',
+            data: {
+                a:'<a href="http://www.baidu.com">百度一下</a>',
+                name: 'haha',
+                childred:{
+                    name:'a',
+                    age:16
+                },
+                myClass:'a'
+            },
+            methods:{
+                show(){
+                  this.name = 'hahahahaha'
+                }
+            }
+        })
+
+
+    </script>
+</body>
+
+</html>
