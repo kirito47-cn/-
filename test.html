@@ -1,12 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
-    <script src="./53最大子序和.js"></script>
+    <script>
+
+        var lengthOfLongestSubstring = function (s) {
+            if(!s) return 0;
+            let noRepeatArr = [];
+            let max = 1;
+            for (let i = 0; i < s.length; i++) {
+                const element = s[i];
+
+                noRepeatArr = [element]
+                for (let j = i + 1; j < s.length; j++) {
+                    if (noRepeatArr.indexOf(s[j]) == -1) { noRepeatArr.push(s[j]) }
+                    else break;
+                }
+                max = max>noRepeatArr.length?max:noRepeatArr.length
+            }
+            return max
+        };
+        console.log(lengthOfLongestSubstring('abcabcbb'))
+    </script>
 </body>
+
 </html>
