@@ -6,29 +6,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        div{
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    
+    </style>
+
 </head>
 
+
 <body>
-    <script>
+    <div>
+        <img src="https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3088300133,2558185601&fm=26&gp=0.jpg" alt="">
+     
+    </div>
 
-        var lengthOfLongestSubstring = function (s) {
-            if(!s) return 0;
-            let noRepeatArr = [];
-            let max = 1;
-            for (let i = 0; i < s.length; i++) {
-                const element = s[i];
-
-                noRepeatArr = [element]
-                for (let j = i + 1; j < s.length; j++) {
-                    if (noRepeatArr.indexOf(s[j]) == -1) { noRepeatArr.push(s[j]) }
-                    else break;
-                }
-                max = max>noRepeatArr.length?max:noRepeatArr.length
-            }
-            return max
-        };
-        console.log(lengthOfLongestSubstring('abcabcbb'))
-    </script>
 </body>
+<script>
+
+ 
+function ListNode(val) {
+      this.val = val;
+      this.next = null;
+ }
+ let p1 = new ListNode(1)
+ let p2 = new ListNode(2)
+ let p3 = new ListNode(3)
+ let p4 = new ListNode(4)
+ let p5 = new ListNode(5)
+p1.next = p2
+p2.next = p3
+p3.next = p4;
+p4.next = p5
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var reverseList = function(head) {
+    let p = head;
+    // if(!p.next) return p;
+    // let pre = null;
+    // let newHead = null;
+    // while(p.next){
+    //     pre = p;
+    //     p = p.next;
+    //     newHead = p;
+    //     newHead.next = pre
+    // }
+    // return newHead
+    console.log(p)
+};
+console.log(reverseList(p1))
+</script>
 
 </html>
